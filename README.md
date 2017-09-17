@@ -12,10 +12,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-namespace HospitalDbApp
+namespace HospitalAppwithDB
 {
     public partial class Form1 : Form
     {
+        public string btnStatus = "None";
         public Form1()
         {
             InitializeComponent();
@@ -23,146 +24,144 @@ namespace HospitalDbApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-        }
-        // section part
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Controls.Clear();
-            Button backBtn = new Button();
-            Button enterBtn = new Button();
-            Controls.Add(backBtn);
-            Controls.Add(enterBtn);
-            textBox1.Left = 250;
-            textBox1.Top = 100;
-            textBox1.Size = new Size(140, 50);
-            Controls.Add(textBox1);
-            backBtn.Top = 300;
-            backBtn.Left = 250;
-            enterBtn.Top = 300;
-            enterBtn.Left = 400;
-            enterBtn.Text = "Enter";
-            backBtn.Text = "Back";
-            backBtn.Click += new System.EventHandler(this.backBtn_Click);
-            enterBtn.Click += new System.EventHandler(this.enterBtn_Click);
-            MessageBox.Show("Enter the section name");
-        }
-        public void enterBtn_Click(object sender,EventArgs e)
-        {
-            var newSectionName = textBox1.Text;
-            var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            var conn = new SqlConnection(connectionString);
-            conn.Open();
-            var queryString = "Insert into [dbo].[Section] (Name) values('" + newSectionName + "')";
-            SqlCommand insertSection = new SqlCommand(queryString, conn);
-            insertSection.ExecuteNonQuery();
-            conn.Close();
-            MessageBox.Show("OK");
-        }
-        public void backBtn_Click(object sender, EventArgs e) // click methods should be added
-        {
-            Button button1 = new Button();
-            Button button2 = new Button();
-            Button button3 = new Button();
-            Button button4 = new Button();
-            Controls.Clear();
-            Controls.Add(button1);
-            Controls.Add(button2);
-            Controls.Add(button3);
-            Controls.Add(button4);
-            // 
-            // button1
-            // 
-            button1.Location = new System.Drawing.Point(336, 97);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(118, 41);
-            button1.TabIndex = 0;
-            button1.Text = "Section";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            button2.Location = new System.Drawing.Point(460, 97);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(118, 41);
-            button2.TabIndex = 1;
-            button2.Text = "Doctor";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            button3.Location = new System.Drawing.Point(584, 97);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(118, 41);
-            button3.TabIndex = 2;
-            button3.Text = "Days";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            button4.Location = new System.Drawing.Point(708, 97);
-            button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(118, 41);
-            button4.TabIndex = 3;
-            button4.Text = "Queue";
-            button4.UseVisualStyleBackColor = true;
-        }
-        // doctor part
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Controls.Clear();
-            Button backBtn2 = new Button();
-            Button enterBtn2 = new Button();
-            Controls.Add(backBtn2);
-            Controls.Add(enterBtn2);
-            textBox2.Size = new Size(140,20);
-            textBox3.Size = new Size(140,20);
-            comboBox1.Size = new Size(140, 21);
-            Controls.Add(textBox2);
-            Controls.Add(textBox3);
-            Controls.Add(comboBox1);
-            backBtn2.Top = 300;
-            backBtn2.Left = 250;
-            enterBtn2.Top = 300;
-            enterBtn2.Left = 400;
-            enterBtn2.Text = "Enter";
-            backBtn2.Text = "Back";
-            backBtn2.Click += new System.EventHandler(this.backBtn_Click);
-            enterBtn2.Click += new System.EventHandler(this.enterBtn2_Click);
 
-            var connectionString2 = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            var conn2 = new SqlConnection(connectionString2);
-            conn2.Open();
-            var queryString2 = "Select * from [dbo].[Section];";
-            SqlCommand insertSectionsInCombo = new SqlCommand(queryString2, conn2);
-            var adapter = new SqlDataAdapter(insertSectionsInCombo);
-            var dataset = new DataSet();
-            adapter.Fill(dataset);
-            conn2.Close();
-            
-            for (int i = 0; i < dataset.Tables[0].Rows.Count; i++)
+        }
+        // Section Part
+        private void sectionBtn_Click(object sender, EventArgs e)
+        {
+            btnStatus = "Section";
+            sectionBtn.Size = new Size(0,51);
+            doctorBtn.Size = new Size(0, 51);
+            daysBtn.Size = new Size(0, 51);
+            sectionNameInput.Size = new Size(170,20);
+            sectionNameInput.Text = "Section Name";
+            backBtn.Size = new Size(70,23);
+            enterBtn.Size = new Size(70,23);
+        }
+        // Doctor Part
+        private void doctorBtn_Click(object sender, EventArgs e)
+        {
+            btnStatus = "Doctor";
+            sectionBtn.Size = new Size(0, 51);
+            doctorBtn.Size = new Size(0, 51);
+            daysBtn.Size = new Size(0, 51);
+            doctorNameInput.Size = new Size(134,20);
+            doctorSurnameInput.Size = new Size(134, 20);
+            availableSections.Size = new Size(134, 20);
+            availableDays.Size = new Size(134, 20);
+            availableQueue.Size = new Size(134, 20);
+            backBtn.Size = new Size(70, 23);
+            enterBtn.Size = new Size(70, 23);
+            // adding elements to the comboboxes
+            string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            // filling sections
+            string queryStringSection = "select * from [dbo].[Section]";
+            SqlCommand commandSection = new SqlCommand(queryStringSection,connection);
+            var adapterSection = new SqlDataAdapter(commandSection);
+            var datasetSection = new DataSet();
+            adapterSection.Fill(datasetSection);
+            for (int i = 0; i < datasetSection.Tables[0].Rows.Count; i++)
             {
-                comboBox1.Items.Add(dataset.Tables[0].Rows[i]["Name"].ToString());
+                availableSections.Items.Add(datasetSection.Tables[0].Rows[i]["Name"].ToString());
+            }
+            // filling days
+            string queryStringDays = "select * from [dbo].[Days]";
+            SqlCommand commandDays = new SqlCommand(queryStringDays,connection);
+            var adapterDays = new SqlDataAdapter(commandDays);
+            var datasetDays = new DataSet();
+            adapterDays.Fill(datasetDays);
+            for (int i = 0; i < datasetDays.Tables[0].Rows.Count; i++)
+            {
+                availableDays.Items.Add(datasetDays.Tables[0].Rows[i]["Date"].ToString());
+            }
+            //filling queue
+            string queryStringQueue = "select * from [dbo].[Queue]";
+            SqlCommand commandQueue = new SqlCommand(queryStringQueue, connection);
+            var adapterQueue = new SqlDataAdapter(commandQueue);
+            var datasetQueue = new DataSet();
+            adapterQueue.Fill(datasetQueue);
+            for (int i = 0; i < datasetQueue.Tables[0].Rows.Count; i++)
+            {
+                availableQueue.Items.Add(datasetQueue.Tables[0].Rows[i]["Name"].ToString());
             }
         }
-        public void enterBtn2_Click(object sender, EventArgs e)
+        // enter button
+        private void enterBtn_Click(object sender, EventArgs e)
         {
-            var sectionNameOfDoctor = comboBox1.SelectedItem.ToString();
-           // var findSectionIdOfDoctor = "Select "
-            //var newDoctorName = textBox2.Text;
-            //var newDoctorSurname = textBox3.Text;
-            //var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            //var conn = new SqlConnection(connectionString);
-            //conn.Open();
-           // var queryString = "Insert into [dbo].[Doctor] (Name,Surname,Section_Id) values('" + newDoctorName + "','"+newDoctorSurname+"','"+"')";
-           // SqlCommand insertSection = new SqlCommand(queryString, conn);
-         //   insertSection.ExecuteNonQuery();
-          //  conn.Close();
-            MessageBox.Show("OK");
+            if (btnStatus == "Section")
+            {
+                string newSectionName = sectionNameInput.Text;
+                string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+                string queryString = "insert into [dbo].[Section] (Name) values('"+newSectionName+"');";
+                SqlCommand command = new SqlCommand(queryString,connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                MessageBox.Show("The New Section: "+newSectionName+" is added to the database");
+            }
+            if (btnStatus == "Doctor")
+            {
+                string newDoctorName = doctorNameInput.Text;
+                string newDoctorSurname = doctorSurnameInput.Text;
+                string newDoctorSection = availableSections.SelectedItem.ToString();
+                string newDoctorDays = availableDays.SelectedItem.ToString();
+                string newDoctorQueue = availableQueue.SelectedItem.ToString();
+                string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HospitalApp;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+                string queryStringGetSectionId = "select Id from [dbo].[Section] where Name = '"+newDoctorSection+"'";
+                SqlCommand GetSectionId = new SqlCommand(queryStringGetSectionId,connection);
+                var getSectionIdAdapter = new SqlDataAdapter(GetSectionId);
+                var getSectionIdDataset = new DataSet();
+                getSectionIdAdapter.Fill(getSectionIdDataset);
+                string selectedSectionIdString = getSectionIdDataset.Tables[0].Rows[0]["Id"].ToString();
+                int selectedSectionId = Convert.ToInt32(selectedSectionIdString);
+                string queryStringDoctorInsert = "insert into [dbo].[Doctor] (Name,Surname,Section_Id) values('"+newDoctorName+"','"+newDoctorSurname+"',"+selectedSectionId+")";
+                //adding the doctor to pivotal table
+                //  finding the id of the doctor
+                string queryStringGetDoctorId = "select Id from [dbo].[Doctor] where Name = '"+newDoctorName+"' and Surname = '"+newDoctorSurname+"'";
+                SqlCommand GetDoctorId = new SqlCommand(queryStringGetDoctorId, connection);
+                var getDoctorIdAdapter = new SqlDataAdapter(GetDoctorId);
+                var getDoctorIdDataset = new DataSet();
+                getDoctorIdAdapter.Fill(getDoctorIdDataset);
+                string selectedDoctorIdString = getDoctorIdDataset.Tables[0].Rows[0]["Id"].ToString();
+                int selectedDoctorId = Convert.ToInt32(selectedDoctorIdString); // the doctor id
+                //  finding the id of the day
+                string queryStringGetDaysId = "select Id from [dbo].[Days] where Date = '" + newDoctorDays + "'";
+                SqlCommand GetDaysId = new SqlCommand(queryStringGetDaysId, connection);
+                var getDaysIdAdapter = new SqlDataAdapter(GetDaysId);
+                var getDaysIdDataset = new DataSet();
+                getDaysIdAdapter.Fill(getDaysIdDataset);
+                string selectedDaysIdString = getDaysIdDataset.Tables[0].Rows[0]["Id"].ToString();
+                int selectedDaysId = Convert.ToInt32(selectedDaysIdString); // the days id
+                //  finding the id of the queue
+                string queryStringGetQueueId = "select Id from [dbo].[Queue] where Name = '" + newDoctorQueue + "'";
+                SqlCommand GetQueueId = new SqlCommand(queryStringGetQueueId, connection);
+                var getQueueIdAdapter = new SqlDataAdapter(GetQueueId);
+                var getQueueIdDataset = new DataSet();
+                getQueueIdAdapter.Fill(getQueueIdDataset);
+                string selectedQueueIdString = getQueueIdDataset.Tables[0].Rows[0]["Id"].ToString();
+                int selectedQueueId = Convert.ToInt32(selectedQueueIdString); // the days id
+                //eventually inserting the data into the pivotal table
+                string queryInsertIntoPivotal = 
+            }
+        }
+        // back button
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Controls.Count; i++)
+            {
+                Controls[i].Size = new Size(0,20);
+            }
+            sectionBtn.Size = new Size(134,51);
+            doctorBtn.Size = new Size(134, 51);
+            daysBtn.Size = new Size(134, 51);
         }
     }
 }
+
 
 ```
